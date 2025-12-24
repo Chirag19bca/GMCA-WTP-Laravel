@@ -1,0 +1,69 @@
+@extends('layouts.app')
+
+@section('title','Home')
+
+@section('content')
+
+<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+<table class="main-table">
+  <tr class="content-row">
+
+    <!-- Left Sidebar -->
+    <td class="sidebar">
+      <b>Latest News:</b>
+      <ol>
+        <li>New Admissions 2025</li>
+        <li>
+          Annual cultural event from <b>30 Sept to 5 Oct 2025</b>
+        </li>
+        <li>Seminar on AI - 15th Oct</li>
+      </ol>
+    </td>
+
+    <!-- Center Content -->
+    <td class="content">
+      <h3>About Our Institute</h3>
+      <p>
+        At Government MCA College, Maninagar, we provide high-quality
+        education in Computer Applications. Our experienced faculties,
+        led by Principal Dr. Chetan B. Bhatt, provide both practical and
+        theoretical knowledge.
+      </p>
+
+      <h3>Our Mission</h3>
+      <p>
+        We aim to produce skilled professionals with strong technical
+        expertise through innovative teaching methods and an excellent
+        learning environment.
+      </p>
+
+      <h3>Contact Us</h3>
+      <form>
+        <label>Name:</label><br />
+        <input type="text" /><br /><br />
+
+        <label>Email:</label><br />
+        <input type="email" /><br /><br />
+
+        <label>Message:</label><br />
+        <textarea rows="4"></textarea><br /><br />
+
+        <input type="submit" value="Submit" />
+      </form>
+    </td>
+
+    <!-- Right Sidebar -->
+    <td class="sidebar">
+      <b>Important Links:</b>
+      <ul>
+        <li><a href="https://nptel.ac.in/" target="_blank">NPTEL</a></li>
+        <li><a href="https://www.ugceresources.in/" target="_blank">UGC</a></li>
+        <li><a href="https://www.aicte-india.org/" target="_blank">AICTE</a></li>
+      </ul>
+    </td>
+
+  </tr>
+</table>
+
+@endsection

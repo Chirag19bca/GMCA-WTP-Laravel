@@ -1,0 +1,56 @@
+@extends('layouts.app')
+
+@section('title','Calculator')
+
+@section('content')
+
+<!-- Page specific CSS -->
+<link rel="stylesheet" href="{{ url('css/cal.css') }}">
+
+<div class="calc-wrapper">
+  <div class="calc-container">
+    <h2>Simple Calculator</h2>
+    <br />
+
+    <div class="calculator">
+      <input type="text" id="display" readonly /><br />
+
+      <button onclick="clearDisplay()">C</button>
+      <button
+        onclick="deleteLast()"
+        style="width: 98px; color: white; background-color: black"
+      >
+        del
+      </button>
+      <button onclick="append('/')">/</button>
+      <br />
+
+      <button onclick="append('7')">7</button>
+      <button onclick="append('8')">8</button>
+      <button onclick="append('9')">9</button>
+      <button onclick="append('*')">*</button>
+      <br />
+
+      <button onclick="append('4')">4</button>
+      <button onclick="append('5')">5</button>
+      <button onclick="append('6')">6</button>
+      <button onclick="append('+')">+</button>
+      <br />
+
+      <button onclick="append('1')">1</button>
+      <button onclick="append('2')">2</button>
+      <button onclick="append('3')">3</button>
+      <button onclick="append('-')">-</button>
+      <br />
+
+      <button onclick="append('.')">.</button>
+      <button onclick="append('0')">0</button>
+      <button onclick="calculate()" style="width: 98px">=</button>
+    </div>
+  </div>
+</div>
+
+<!-- Calculator JS -->
+<script src="{{ url('js/cal.js') }}"></script>
+
+@endsection

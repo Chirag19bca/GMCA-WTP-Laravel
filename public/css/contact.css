@@ -1,0 +1,46 @@
+.contact-wrapper {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.contact-wrapper h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.contact-intro {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.contact-form .form-row {
+    margin-bottom: 15px;
+}
+
+.contact-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #999;
+    border-radius: 4px;
+}
+
+.contact-btn {
+    padding: 10px 20px;
+    background-color: orange;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.contact-info {
+    margin-top: 25px;
+    text-align: center;
+}

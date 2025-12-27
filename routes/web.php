@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AutoLoginController;
+use App\Http\Controllers\StudentFormController;
+
 /*
 |--------------------------------------------------------------------------
 | Public Pages
@@ -69,9 +71,12 @@ Route::get('/profile', [ProfileController::class, 'show'])
 Route::get('/calc', function () {
     return view('calc');
 })->middleware('auth');
-Route::get('/studentform', function () {
-    return view('studentform');
-})->middleware('auth');
+Route::get('/studentform', [StudentFormController::class, 'show'])
+    ->middleware('auth');
+
+Route::post('/studentform', [StudentFormController::class, 'store'])
+    ->middleware('auth');
+
 
 Route::fallback(function () {
     return redirect('/');

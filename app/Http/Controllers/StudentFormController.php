@@ -8,10 +8,12 @@ use Illuminate\Support\Facades\DB;
 
 class StudentFormController extends Controller
 {
+    /* ================= SHOW FORM ================= */
     public function show()
     {
         $userId = Auth::id();
 
+        // Fetch user + profile
         $profile = DB::table('users')
             ->join('student_profile', 'users.id', '=', 'student_profile.user_id')
             ->where('users.id', $userId)
@@ -27,6 +29,7 @@ class StudentFormController extends Controller
             )
             ->first();
 
+        // Fetch education details
         $education = DB::table('education_details')
             ->where('user_id', $userId)
             ->first();
@@ -34,9 +37,24 @@ class StudentFormController extends Controller
         return view('studentform', compact('profile', 'education'));
     }
 
+    /* ================= SUBMIT FORM ================= */
     public function store(Request $request)
     {
         $userId = Auth::id();
+
+        /* ---------- OPTIONAL VALIDATION ---------- */
+        $request->validate([
+            'dob'            => 'nullable|date',
+            'gender'         => 'nullable|in:male,female',
+            'contact_no'     => 'nullable|string|max:15',
+            'address'        => 'nullable|string',
+            'ssc_school'     => 'nullable|string',
+            'ssc_board'      => 'nullable|string',
+            'ssc_percentage' => 'nullable|numeric',
+            'hsc_school'     => 'nullable|string',
+            'hsc_board'      => 'nullable|string',
+            'hsc_percentage' => 'nullable|numeric',
+        ]);
 
         /* ---------- UPDATE student_profile ---------- */
         DB::table('student_profile')
@@ -49,10 +67,6 @@ class StudentFormController extends Controller
             ]);
 
         /* ---------- INSERT or UPDATE education_details ---------- */
-        $exists = DB::table('education_details')
-            ->where('user_id', $userId)
-            ->exists();
-
         $educationData = [
             'ssc_school'     => $request->ssc_school,
             'ssc_board'      => $request->ssc_board,
@@ -61,6 +75,10 @@ class StudentFormController extends Controller
             'hsc_board'      => $request->hsc_board,
             'hsc_percentage' => $request->hsc_percentage,
         ];
+
+        $exists = DB::table('education_details')
+            ->where('user_id', $userId)
+            ->exists();
 
         if ($exists) {
             DB::table('education_details')
@@ -74,6 +92,7 @@ class StudentFormController extends Controller
                 ));
         }
 
+        /* ---------- REDIRECT ---------- */
         return redirect('/profile')
             ->with('success', 'Student details updated successfully.');
     }

@@ -10,7 +10,22 @@
   <div class="auth-card">
     <h2>Login</h2>
 
-    <form id="login-form">
+    {{-- SUCCESS MESSAGE --}}
+    @if (session('success'))
+      <p style="color:green; font-size:15px; font-weight:600; margin-bottom:10px">
+        {{ session('success') }}
+      </p>
+    @endif
+
+    {{-- ERROR MESSAGE --}}
+    @if ($errors->any())
+      <p style="color:red; font-size:15px; font-weight:600; margin-bottom:10px">
+        {{ $errors->first() }}
+      </p>
+    @endif
+
+    <form id="login-form" method="POST" action="{{ url('/login') }}">
+      @csrf
 
       <!-- Enrollment No -->
       <div class="form-row">
@@ -18,10 +33,9 @@
         <input
           type="text"
           name="enrollment_no"
-          id="enrollment_no"
+          value="{{ old('enrollment_no') }}"
           class="form-control"
         />
-        <span class="error-msg" id="enrollment_no_error"></span>
       </div>
 
       <!-- Email -->
@@ -30,11 +44,10 @@
         <input
           type="email"
           name="email"
-          id="email"
-          autocomplete="nope"
+          value="{{ old('email') }}"
+          autocomplete="off"
           class="form-control"
         />
-        <span class="error-msg" id="email_error"></span>
       </div>
 
       <!-- Password -->
@@ -44,30 +57,19 @@
           <input
             type="password"
             name="password"
-            id="password"
-            autocomplete="new-password"
             class="form-control"
+            required
           />
           <span
             class="toggle-password"
             onclick="toggleLoginPassword()"
             title="Show / Hide password"
-          >
-            👁
-          </span>
+          >👁</span>
         </div>
-        <span class="error-msg" id="password_error"></span>
       </div>
 
-      <!-- Error message (static for now) -->
-      <p
-        class="error-msg"
-        id="login_error_msg"
-        style="display:none; color:red; font-size:15px; font-weight:600; margin-top:6px"
-      ></p>
-
       <div class="form-row">
-        <button type="button">Login</button>
+        <button type="submit">Login</button>
       </div>
     </form>
 
@@ -79,13 +81,9 @@
   </div>
 </div>
 
-<!-- Shared validation JS -->
-<script src="{{ url('js/register.js') }}"></script>
-
-<!-- Password toggle JS -->
 <script>
   function toggleLoginPassword() {
-    const field = document.getElementById("password");
+    const field = document.querySelector("input[name='password']");
     field.type = field.type === "password" ? "text" : "password";
   }
 </script>

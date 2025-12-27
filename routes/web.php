@@ -1,10 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Public Pages
 |--------------------------------------------------------------------------
 */
 
@@ -28,19 +30,24 @@ Route::get('/calc', function () {
     return view('calc');
 });
 
-Route::get('/studentform', function () {
-    return view('studentform');
-});
+/*
+|--------------------------------------------------------------------------
+| Authentication
+|--------------------------------------------------------------------------
+*/
 
-/* Auth pages */
-Route::get('/login', function () {
-    return view('auth.login');
-});
+// Login
+Route::get('/login', [LoginController::class, 'show'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 
-Route::get('/register', function () {
-    return view('auth.register');
-});
+// Register
+Route::get('/register', [RegisterController::class, 'show'])->name('register');
+Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
 
+// Logout
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+// Forgot / Reset password (views only for now)
 Route::get('/forgot-password', function () {
     return view('auth.forgot-password');
 });
@@ -49,7 +56,16 @@ Route::get('/reset-password', function () {
     return view('auth.reset-password');
 });
 
-/* Profile */
+/*
+|--------------------------------------------------------------------------
+| Protected Pages
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/profile', function () {
     return view('profile');
-});
+})->middleware('auth');
+
+Route::get('/studentform', function () {
+    return view('studentform');
+})->middleware('auth');

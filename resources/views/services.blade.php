@@ -11,7 +11,7 @@
 
     <div class="services-container">
 
-        <!-- Service Card -->
+        <!-- Student Form -->
         <div class="service-card" onclick="goToStudentForm()">
             <h3>Student Academic Form</h3>
             <p>
@@ -21,6 +21,16 @@
             <span class="service-link">Go to Form →</span>
         </div>
 
+        <!-- Calculator -->
+        <div class="service-card" onclick="goToCalculator()">
+            <h3>Calculator</h3>
+            <p>
+                Perform basic arithmetic calculations using our
+                built-in calculator tool.
+            </p>
+            <span class="service-link">Open Calculator →</span>
+        </div>
+
     </div>
 </div>
 
@@ -28,6 +38,10 @@
 <script>
     function goToStudentForm() {
         window.location.href = "{{ url('/studentform') }}";
+    }
+
+    function goToCalculator() {
+        window.location.href = "{{ url('/calc') }}";
     }
 </script>
 

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,9 +63,8 @@ Route::get('/reset-password', function () {
 |--------------------------------------------------------------------------
 */
 
-Route::get('/profile', function () {
-    return view('profile');
-})->middleware('auth');
+Route::get('/profile', [ProfileController::class, 'show'])
+    ->middleware('auth');
 
 Route::get('/studentform', function () {
     return view('studentform');

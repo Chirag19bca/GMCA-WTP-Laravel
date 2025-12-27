@@ -10,45 +10,50 @@
   <div class="profile-card">
     <h2>User Profile</h2>
 
-    <!-- Status messages (static for now) -->
-    <p class="profile-status">Loading…</p>
-    <p class="profile-status error" style="display:none;"></p>
+    {{-- If no profile data --}}
+    @if(!$profile)
+      <p class="profile-status error">
+        Profile not completed yet. Please fill your student details.
+      </p>
 
-    <!-- DISPLAY MODE -->
-    <div>
+      <div class="profile-actions">
+        <a href="{{ url('/studentform') }}" class="btn-edit">Complete Profile</a>
+      </div>
 
+    @else
+      {{-- DISPLAY MODE --}}
       <table class="profile-table">
         <tr>
           <th>Enrollment No</th>
-          <td>—</td>
+          <td>{{ $profile->enrollment_no }}</td>
         </tr>
         <tr>
           <th>First Name</th>
-          <td>—</td>
+          <td>{{ $profile->fname }}</td>
         </tr>
         <tr>
           <th>Last Name</th>
-          <td>—</td>
+          <td>{{ $profile->lname }}</td>
         </tr>
         <tr>
           <th>Email</th>
-          <td>—</td>
+          <td>{{ $profile->email }}</td>
         </tr>
         <tr>
           <th>Date of Birth</th>
-          <td>—</td>
+          <td>{{ $profile->dob ?? '—' }}</td>
         </tr>
         <tr>
           <th>Gender</th>
-          <td>—</td>
+          <td>{{ $profile->gender ?? '—' }}</td>
         </tr>
         <tr>
           <th>Contact No</th>
-          <td>—</td>
+          <td>{{ $profile->contact ?? '—' }}</td>
         </tr>
         <tr>
           <th>Address</th>
-          <td>—</td>
+          <td>{{ $profile->address ?? '—' }}</td>
         </tr>
       </table>
 
@@ -60,15 +65,17 @@
         </tr>
         <tr>
           <td>School Name</td>
-          <td>—</td>
+          <td>{{ $profile->ssc_school ?? '—' }}</td>
         </tr>
         <tr>
           <td>Board</td>
-          <td>—</td>
+          <td>{{ $profile->ssc_board ?? '—' }}</td>
         </tr>
         <tr>
           <td>Percentage</td>
-          <td>—</td>
+          <td>
+            {{ $profile->ssc_percentage !== null ? $profile->ssc_percentage . '%' : '—' }}
+          </td>
         </tr>
 
         <tr>
@@ -76,27 +83,26 @@
         </tr>
         <tr>
           <td>School Name</td>
-          <td>—</td>
+          <td>{{ $profile->hsc_school ?? '—' }}</td>
         </tr>
         <tr>
           <td>Board</td>
-          <td>—</td>
+          <td>{{ $profile->hsc_board ?? '—' }}</td>
         </tr>
         <tr>
           <td>Percentage</td>
-          <td>—</td>
+          <td>
+            {{ $profile->hsc_percentage !== null ? $profile->hsc_percentage . '%' : '—' }}
+          </td>
         </tr>
       </table>
 
       <div class="profile-actions">
         <a href="{{ url('/studentform') }}" class="btn-edit">Edit Details</a>
       </div>
+    @endif
 
-    </div>
   </div>
 </div>
-
-<!-- reuse studentform validation for these fields -->
-<script src="{{ url('js/studentform.js') }}"></script>
 
 @endsection

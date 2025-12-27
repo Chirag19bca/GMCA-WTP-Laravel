@@ -3,40 +3,40 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 
 class AutoLoginController extends Controller
 {
-    public function login(Request $request, $user)
+    public function login($user)
     {
-        // Allow only in local environment
-        if (!app()->isLocal()) {
-            abort(403);
+        // Prevent switching while logged in
+        if (Auth::check()) {
+            return redirect('/profile');
         }
 
-        // Preset users (must exist in DB)
-        $users = [
-            'dhruvil' => 'dhruvil@gmail.com',
-            'dhrumil' => 'dhrumil@gmail.com',
-            'chirag'  => 'chirag@gmail.com',
+        // Map photo name → email
+        $map = [
+            'Dhruvil' => 'dhruvil@gmail.com',
+            'Dhrumil' => 'dhrumil@gmail.com',
+            'Chirag'  => 'chirag@gmail.com',
         ];
 
-        if (!isset($users[$user])) {
-            abort(404);
+        if (!isset($map[$user])) {
+            return redirect('/');
         }
 
-        $foundUser = User::where('email', $users[$user])->first();
+        $dbUser = DB::table('users')
+            ->where('email', $map[$user])
+            ->first();
 
-        if (!$foundUser) {
+        if (!$dbUser) {
             return redirect('/login')
-                ->withErrors(['email' => 'Auto-login user not found in database']);
+                ->withErrors('Auto login user not found.');
         }
 
-        Auth::login($foundUser);
-        $request->session()->regenerate();
+        Auth::loginUsingId($dbUser->id);
 
-        return redirect('/profile')->with('success', 'Auto login successful');
+        return redirect('/profile');
     }
 }

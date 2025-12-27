@@ -183,19 +183,31 @@ function validateRegisterFormOnSubmit() {
   return valid;
 }
 
-/*
-// OLD plain-submit behaviour for register form
-// (still only for #register-form; we leave it disabled
-// because login is using Angular ng-submit)
+// ------------------------------
+// Login-specific submit validation
+// ------------------------------
+function validateLoginForm() {
+  const form = document.getElementById("login-form");
+  if (!form) return true;
 
-document.addEventListener("submit", function (event) {
-  const form = event.target;
-  if (!form || form.id !== "register-form") return;
+  let valid = true;
 
-  event.preventDefault();
-  const ok = validateRegisterFormOnSubmit();
-  if (ok) {
-    form.submit();
+  const fields = [
+    document.getElementById("enrollment_no"),
+    document.getElementById("email"),
+    document.getElementById("password"),
+  ];
+
+  fields.forEach((f) => {
+    if (f && !validateRegisterField(f)) valid = false;
+  });
+
+  const msg = document.getElementById("login_error_msg");
+  if (!valid && msg) {
+    msg.textContent = "Please fix the highlighted fields.";
+    msg.style.display = "block";
   }
-});
-*/
+
+  return valid;
+}
+

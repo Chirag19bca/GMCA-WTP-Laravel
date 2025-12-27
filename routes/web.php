@@ -6,6 +6,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AutoLoginController;
 use App\Http\Controllers\StudentFormController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ChangePasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,14 +53,20 @@ Route::get('/auto-login/{user}', [AutoLoginController::class, 'login'])
 // Logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// Forgot / Reset password (views only for now)
+// Forgot password 
 Route::get('/forgot-password', function () {
     return view('auth.forgot-password');
 });
 
-Route::get('/reset-password', function () {
-    return view('auth.reset-password');
-});
+Route::post('/forgot-password', [ForgotPasswordController::class, 'handle']);
+
+// Change Password
+Route::get('/change-password', [ChangePasswordController::class, 'show'])
+    ->middleware('auth');
+
+Route::post('/change-password', [ChangePasswordController::class, 'update'])
+    ->middleware('auth');
+
 
 /*
 |--------------------------------------------------------------------------

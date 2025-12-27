@@ -10,21 +10,28 @@
   <div class="auth-card">
     <h2>Login</h2>
 
-    {{-- SUCCESS MESSAGE --}}
+    {{-- SERVER SUCCESS MESSAGE --}}
     @if (session('success'))
-      <p style="color:green; font-size:15px; font-weight:600; margin-bottom:10px">
+      <p class="success-msg" style="display:block; margin-bottom:10px;">
         {{ session('success') }}
       </p>
     @endif
 
-    {{-- ERROR MESSAGE --}}
+    {{-- SERVER ERROR MESSAGE --}}
     @if ($errors->any())
-      <p style="color:red; font-size:15px; font-weight:600; margin-bottom:10px">
+      <p class="error-msg" style="display:block; margin-bottom:10px;">
         {{ $errors->first() }}
       </p>
     @endif
 
-    <form id="login-form" method="POST" action="{{ url('/login') }}">
+    <form
+      id="login-form"
+      method="POST"
+      action="{{ url('/login') }}"
+      novalidate
+      onsubmit="return validateLoginForm();"
+      autocomplete="off"
+    >
       @csrf
 
       <!-- Enrollment No -->
@@ -32,10 +39,12 @@
         <label>Enrollment No</label>
         <input
           type="text"
+          id="enrollment_no"
           name="enrollment_no"
           value="{{ old('enrollment_no') }}"
           class="form-control"
         />
+        <span class="error-msg" id="enrollment_no_error"></span>
       </div>
 
       <!-- Email -->
@@ -43,11 +52,13 @@
         <label>Email</label>
         <input
           type="email"
+          id="email"
           name="email"
           value="{{ old('email') }}"
           autocomplete="off"
           class="form-control"
         />
+        <span class="error-msg" id="email_error"></span>
       </div>
 
       <!-- Password -->
@@ -56,9 +67,10 @@
         <div class="password-wrapper">
           <input
             type="password"
+            id="password"
             name="password"
+            autocomplete="new-password"
             class="form-control"
-            required
           />
           <span
             class="toggle-password"
@@ -66,7 +78,15 @@
             title="Show / Hide password"
           >👁</span>
         </div>
+        <span class="error-msg" id="password_error"></span>
       </div>
+
+      <!-- GLOBAL CLIENT VALIDATION ERROR -->
+      <p
+        class="error-msg"
+        id="login_error_msg"
+        style="display:none; font-weight:600; margin-top:6px;"
+      ></p>
 
       <div class="form-row">
         <button type="submit">Login</button>
@@ -81,10 +101,35 @@
   </div>
 </div>
 
+<!-- Shared validation logic -->
+<script src="{{ url('js/register.js') }}"></script>
+
 <script>
   function toggleLoginPassword() {
-    const field = document.querySelector("input[name='password']");
+    const field = document.getElementById("password");
     field.type = field.type === "password" ? "text" : "password";
+  }
+
+  // Client-side submit validation
+  function validateLoginForm() {
+    let valid = true;
+
+    if (!validateRegisterField(document.getElementById("enrollment_no")))
+      valid = false;
+
+    if (!validateRegisterField(document.getElementById("email")))
+      valid = false;
+
+    if (!validateRegisterField(document.getElementById("password")))
+      valid = false;
+
+    const msg = document.getElementById("login_error_msg");
+    if (!valid && msg) {
+      msg.innerText = "Please fix the highlighted fields.";
+      msg.style.display = "block";
+    }
+
+    return valid;
   }
 </script>
 

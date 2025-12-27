@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ProfileController;
-
+use App\Http\Controllers\Auth\AutoLoginController;
 /*
 |--------------------------------------------------------------------------
 | Public Pages
@@ -45,6 +45,9 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::get('/register', [RegisterController::class, 'show'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
 
+// Auto Login
+Route::get('/auto-login/{user}', [AutoLoginController::class, 'login'])
+    ->name('auto.login');
 // Logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 

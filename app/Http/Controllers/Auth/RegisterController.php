@@ -15,6 +15,7 @@ class RegisterController extends Controller
         if (Auth::check()) {
             return redirect('/profile');
         }
+
         return view('auth.register');
     }
 
@@ -28,11 +29,15 @@ class RegisterController extends Controller
             !$request->email ||
             !$request->password
         ) {
-            return back()->withErrors('All fields are required.');
+            return back()
+                ->withErrors('All fields are required.')
+                ->withInput();
         }
 
         if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
-            return back()->withErrors('Invalid email format.');
+            return back()
+                ->withErrors('Invalid email format.')
+                ->withInput();
         }
 
         /* ---------- 2. Check duplicate ---------- */
@@ -42,12 +47,12 @@ class RegisterController extends Controller
             ->exists();
 
         if ($exists) {
-            return back()->withErrors(
-                'User with this enrollment number or email already exists.'
-            );
+            return back()
+                ->withErrors('User with this enrollment number or email already exists.')
+                ->withInput();
         }
 
-        /* ---------- 3. Insert into users ---------- */
+        /* ---------- 3. Insert into users (NO timestamps) ---------- */
         $userId = DB::table('users')->insertGetId([
             'enrollment_no' => $request->enrollment_no,
             'email'         => $request->email,
@@ -66,9 +71,11 @@ class RegisterController extends Controller
             'email'   => $request->email,
         ]);
 
-        /* ---------- 5. Optional login ---------- */
-        Auth::loginUsingId($userId);
+        /* ---------- 5. DO NOT auto login ---------- */
+        Auth::logout();
 
-        return redirect('/profile')->with('success', 'Registration successful.');
+        /* ---------- 6. Redirect to login ---------- */
+        return redirect('/login')
+            ->with('success', 'Registration successful. Please login.');
     }
 }

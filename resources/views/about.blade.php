@@ -45,9 +45,7 @@
       This project was developed by students of GMCA as part of the mini-project requirement.
     </p>
 
-    <div class="about-footer">
-      <a href="{{ url('/') }}">Back to Home</a>
-    </div>
+   
   </div>
 </div>
 

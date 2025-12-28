@@ -4,18 +4,18 @@
 // Helpers
 // ------------------------------
 function showError(id, message) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = message;
+    const el = document.getElementById(id);
+    if (el) el.textContent = message;
 }
 
 function clearError(id) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = "";
+    const el = document.getElementById(id);
+    if (el) el.textContent = "";
 }
 
 function v(id) {
-  const el = document.getElementById(id);
-  return el ? el.value.trim() : "";
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : "";
 }
 
 // ------------------------------
@@ -23,147 +23,193 @@ function v(id) {
 // (used for BOTH register + login)
 // ------------------------------
 function validateRegisterField(field) {
-  if (!field || !field.id) return true;
-  const id = field.id;
-  const value = v(id);
-  let ok = true;
+    if (!field || !field.id) return true;
+    const id = field.id;
+    const value = v(id);
+    let ok = true;
 
-  switch (id) {
-    case "enrollment_no":
-      if (!value) {
-        showError("enrollment_no_error", "Enrollment number is required.");
-        ok = false;
-      } else if (!/^[0-9]+$/.test(value)) {
-        showError("enrollment_no_error", "Only digits are allowed.");
-        ok = false;
-      } else if (value.length !== 12) {
-        showError(
-          "enrollment_no_error",
-          "Enrollment number must be 12 digits."
-        );
-        ok = false;
-      } else clearError("enrollment_no_error");
-      break;
+    switch (id) {
+        case "enrollment_no":
+            if (!value) {
+                showError(
+                    "enrollment_no_error",
+                    "Enrollment number is required."
+                );
+                ok = false;
+            } else if (!/^[0-9]+$/.test(value)) {
+                showError("enrollment_no_error", "Only digits are allowed.");
+                ok = false;
+            } else if (value.length !== 12) {
+                showError(
+                    "enrollment_no_error",
+                    "Enrollment number must be 12 digits."
+                );
+                ok = false;
+            } else clearError("enrollment_no_error");
+            break;
 
-    case "fname":
-      // only exists on register form
-      if (!value) {
-        showError("fname_error", "First name is required.");
-        ok = false;
-      } else if (!/^[a-zA-Z\s]+$/.test(value)) {
-        showError("fname_error", "Only letters are allowed.");
-        ok = false;
-      } else clearError("fname_error");
-      break;
+        case "fname":
+            // only exists on register form
+            if (!value) {
+                showError("fname_error", "First name is required.");
+                ok = false;
+            } else if (!/^[a-zA-Z\s]+$/.test(value)) {
+                showError("fname_error", "Only letters are allowed.");
+                ok = false;
+            } else clearError("fname_error");
+            break;
 
-    case "lname":
-      // only exists on register form
-      if (!value) {
-        showError("lname_error", "Last name is required.");
-        ok = false;
-      } else if (!/^[a-zA-Z\s]+$/.test(value)) {
-        showError("lname_error", "Only letters are allowed.");
-        ok = false;
-      } else clearError("lname_error");
-      break;
+        case "lname":
+            // only exists on register form
+            if (!value) {
+                showError("lname_error", "Last name is required.");
+                ok = false;
+            } else if (!/^[a-zA-Z\s]+$/.test(value)) {
+                showError("lname_error", "Only letters are allowed.");
+                ok = false;
+            } else clearError("lname_error");
+            break;
 
-    case "email":
-      // used in both register + login
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailPattern.test(value)) {
-        showError("email_error", "Enter a valid email.");
-        ok = false;
-      } else clearError("email_error");
-      break;
+        case "email":
+            // used in both register + login
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(value)) {
+                showError("email_error", "Enter a valid email.");
+                ok = false;
+            } else clearError("email_error");
+            break;
 
-    case "password": {
-      const pass = value;
-      const uppercase = /[A-Z]/;
-      const digit = /[0-9]/;
-      const special = /[@#$]/;
+        case "current_password": {
+            const pass = value;
+            const uppercase = /[A-Z]/;
+            const digit = /[0-9]/;
+            const special = /[@#$]/;
 
-      if (pass.length < 8) {
-        showError("password_error", "Min 8 characters required.");
-        ok = false;
-      } else if (!uppercase.test(pass)) {
-        showError(
-          "password_error",
-          "Password must contain 1 uppercase letter."
-        );
-        ok = false;
-      } else if (!digit.test(pass)) {
-        showError("password_error", "Password must contain 1 digit.");
-        ok = false;
-      } else if (!special.test(pass)) {
-        showError("password_error", "Use at least one of @ # $");
-        ok = false;
-      } else {
-        clearError("password_error");
-      }
-      break;
+            if (!pass) {
+                showError(
+                    "current_password_error",
+                    "Current password is required."
+                );
+                ok = false;
+            } else if (pass.length < 8) {
+                showError(
+                    "current_password_error",
+                    "Min 8 characters required."
+                );
+                ok = false;
+            } else if (!uppercase.test(pass)) {
+                showError(
+                    "current_password_error",
+                    "Must contain 1 uppercase letter."
+                );
+                ok = false;
+            } else if (!digit.test(pass)) {
+                showError("current_password_error", "Must contain 1 digit.");
+                ok = false;
+            } else if (!special.test(pass)) {
+                showError(
+                    "current_password_error",
+                    "Use at least one of @ # $"
+                );
+                ok = false;
+            } else {
+                clearError("current_password_error");
+            }
+            break;
+        }
+
+        case "password": {
+            const pass = value;
+            const uppercase = /[A-Z]/;
+            const digit = /[0-9]/;
+            const special = /[@#$]/;
+
+            if (pass.length < 8) {
+                showError("password_error", "Min 8 characters required.");
+                ok = false;
+            } else if (!uppercase.test(pass)) {
+                showError(
+                    "password_error",
+                    "Password must contain 1 uppercase letter."
+                );
+                ok = false;
+            } else if (!digit.test(pass)) {
+                showError("password_error", "Password must contain 1 digit.");
+                ok = false;
+            } else if (!special.test(pass)) {
+                showError("password_error", "Use at least one of @ # $");
+                ok = false;
+            } else {
+                clearError("password_error");
+            }
+            break;
+        }
+
+        case "confirm_password": {
+            const password = v("password");
+
+            if (!value) {
+                showError(
+                    "confirm_password_error",
+                    "Confirm password is required."
+                );
+                ok = false;
+            } else if (value !== password) {
+                showError("confirm_password_error", "Passwords do not match.");
+                ok = false;
+            } else {
+                clearError("confirm_password_error");
+            }
+            break;
+        }
     }
 
-    case "confirm_password": {
-      const password = v("password");
-
-      if (!value) {
-        showError("confirm_password_error", "Confirm password is required.");
-        ok = false;
-      } else if (value !== password) {
-        showError("confirm_password_error", "Passwords do not match.");
-        ok = false;
-      } else {
-        clearError("confirm_password_error");
-      }
-      break;
-    }
-  }
-
-  return ok;
+    return ok;
 }
 
 // ------------------------------
 // Get active form (register OR login)
 // ------------------------------
 function getActiveAuthForm() {
-  const regForm = document.getElementById("register-form");
-  const logForm = document.getElementById("login-form");
-  const forgotForm = document.getElementById("forgot-form");
-  const resetForm = document.getElementById("reset-form");
+    const regForm = document.getElementById("register-form");
+    const logForm = document.getElementById("login-form");
+    const forgotForm = document.getElementById("forgot-form");
+    const changeForm = document.querySelector(
+        "form[action*='change-password']"
+    );
 
-  if (regForm) return regForm;
-  if (logForm) return logForm;
-  if (forgotForm) return forgotForm;
-  if (resetForm) return resetForm;
+    if (regForm) return regForm;
+    if (logForm) return logForm;
+    if (forgotForm) return forgotForm;
+    if (changeForm) return changeForm;
 
-  return null;
+    return null;
 }
-
 
 // ------------------------------
 // Live validation (blur + input)
 // works for whichever form exists
 // ------------------------------
 document.addEventListener(
-  "blur",
-  function (e) {
+    "blur",
+    function (e) {
+        const form = getActiveAuthForm();
+        if (!form) return;
+
+        if (form.contains(e.target) && e.target.tagName === "INPUT") {
+            validateRegisterField(e.target);
+        }
+    },
+    true
+);
+
+document.addEventListener("input", function (e) {
     const form = getActiveAuthForm();
     if (!form) return;
 
     if (form.contains(e.target) && e.target.tagName === "INPUT") {
-      validateRegisterField(e.target);
+        validateRegisterField(e.target);
     }
-  },
-  true
-);
-
-document.addEventListener("input", function (e) {
-  const form = getActiveAuthForm();
-  if (!form) return;
-
-  if (form.contains(e.target) && e.target.tagName === "INPUT") {
-    validateRegisterField(e.target);
-  }
 });
 
 // ------------------------------
@@ -171,43 +217,42 @@ document.addEventListener("input", function (e) {
 // (you can call this from Angular if you want)
 // ------------------------------
 function validateRegisterFormOnSubmit() {
-  const form = getActiveAuthForm();
-  if (!form) return false;
+    const form = getActiveAuthForm();
+    if (!form) return false;
 
-  let valid = true;
-  const fields = form.querySelectorAll("input");
-  fields.forEach((f) => {
-    if (!validateRegisterField(f)) valid = false;
-  });
+    let valid = true;
+    const fields = form.querySelectorAll("input");
+    fields.forEach((f) => {
+        if (!validateRegisterField(f)) valid = false;
+    });
 
-  return valid;
+    return valid;
 }
 
 // ------------------------------
 // Login-specific submit validation
 // ------------------------------
 function validateLoginForm() {
-  const form = document.getElementById("login-form");
-  if (!form) return true;
+    const form = document.getElementById("login-form");
+    if (!form) return true;
 
-  let valid = true;
+    let valid = true;
 
-  const fields = [
-    document.getElementById("enrollment_no"),
-    document.getElementById("email"),
-    document.getElementById("password"),
-  ];
+    const fields = [
+        document.getElementById("enrollment_no"),
+        document.getElementById("email"),
+        document.getElementById("password"),
+    ];
 
-  fields.forEach((f) => {
-    if (f && !validateRegisterField(f)) valid = false;
-  });
+    fields.forEach((f) => {
+        if (f && !validateRegisterField(f)) valid = false;
+    });
 
-  const msg = document.getElementById("login_error_msg");
-  if (!valid && msg) {
-    msg.textContent = "Please fix the highlighted fields.";
-    msg.style.display = "block";
-  }
+    const msg = document.getElementById("login_error_msg");
+    if (!valid && msg) {
+        msg.textContent = "Please fix the highlighted fields.";
+        msg.style.display = "block";
+    }
 
-  return valid;
+    return valid;
 }
-

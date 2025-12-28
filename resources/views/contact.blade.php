@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="{{ url('css/contact.css') }}">
 
 <div class="contact-wrapper">
-    <h2>Contact Us</h2>
+    <legend>Contact Us</legend>
 
     <p class="contact-intro">
         If you have any questions or need assistance, feel free to contact us

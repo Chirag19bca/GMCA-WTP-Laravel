@@ -4,24 +4,43 @@
 
 @section('content')
 
+@php
+  $profile = $profile ?? null;
+@endphp
+
 <link rel="stylesheet" href="{{ url('css/profile.css') }}">
 
 <div class="profile-wrapper">
   <div class="profile-card">
+
     <h2>User Profile</h2>
 
-    {{-- If no profile data --}}
-    @if(!$profile)
-    <p class="profile-status error">
-      Profile not completed yet. Please fill your student details.
-    </p>
+    {{-- PROFILE STATUS --}}
+    @if(!$profile || !$profile->dob)
+      <p class="profile-status incomplete">
+        Profile Status: Incomplete
+      </p>
+    @else
+      <p class="profile-status complete">
+        Profile Status: Completed
+      </p>
+    @endif
 
-    <div class="profile-actions">
-      <a href="{{ url('/studentform') }}" class="btn-edit">Complete Profile</a>
-    </div>
+    {{-- IF PROFILE NOT FILLED --}}
+    @if(!$profile)
+      <p class="profile-info">
+        Your profile is not completed yet. Please fill your student details.
+      </p>
+
+      <div class="profile-actions">
+        <a href="{{ url('/studentform') }}" class="btn-primary">
+          Complete Profile
+        </a>
+      </div>
 
     @else
-    {{-- DISPLAY MODE --}}
+
+    {{-- BASIC DETAILS --}}
     <table class="profile-table">
       <tr>
         <th>Enrollment No</th>
@@ -57,49 +76,51 @@
       </tr>
     </table>
 
-    <h3>Education Details</h3>
+    {{-- EDUCATION DETAILS --}}
+    <div class="education-section">
+      <h3>Education Details</h3>
 
-    <table class="profile-table">
-      <tr>
-        <th colspan="2">10th Standard</th>
-      </tr>
-      <tr>
-        <td>School Name</td>
-        <td>{{ $profile->ssc_school ?? '—' }}</td>
-      </tr>
-      <tr>
-        <td>Board</td>
-        <td>{{ $profile->ssc_board ?? '—' }}</td>
-      </tr>
-      <tr>
-        <td>Percentage</td>
-        <td>
-          {{ $profile->ssc_percentage !== null ? $profile->ssc_percentage . '%' : '—' }}
-        </td>
-      </tr>
+      <table class="profile-table">
+        <tr>
+          <th colspan="2">10th Standard</th>
+        </tr>
+        <tr>
+          <td>School Name</td>
+          <td>{{ $profile->ssc_school ?? '—' }}</td>
+        </tr>
+        <tr>
+          <td>Board</td>
+          <td>{{ $profile->ssc_board ?? '—' }}</td>
+        </tr>
+        <tr>
+          <td>Percentage</td>
+          <td>{{ $profile->ssc_percentage !== null ? $profile->ssc_percentage.'%' : '—' }}</td>
+        </tr>
 
-      <tr>
-        <th colspan="2">12th Standard</th>
-      </tr>
-      <tr>
-        <td>School Name</td>
-        <td>{{ $profile->hsc_school ?? '—' }}</td>
-      </tr>
-      <tr>
-        <td>Board</td>
-        <td>{{ $profile->hsc_board ?? '—' }}</td>
-      </tr>
-      <tr>
-        <td>Percentage</td>
-        <td>
-          {{ $profile->hsc_percentage !== null ? $profile->hsc_percentage . '%' : '—' }}
-        </td>
-      </tr>
-    </table>
+        <tr>
+          <th colspan="2">12th Standard</th>
+        </tr>
+        <tr>
+          <td>School Name</td>
+          <td>{{ $profile->hsc_school ?? '—' }}</td>
+        </tr>
+        <tr>
+          <td>Board</td>
+          <td>{{ $profile->hsc_board ?? '—' }}</td>
+        </tr>
+        <tr>
+          <td>Percentage</td>
+          <td>{{ $profile->hsc_percentage !== null ? $profile->hsc_percentage.'%' : '—' }}</td>
+        </tr>
+      </table>
+    </div>
 
+    {{-- ACTION BUTTONS --}}
     <div class="profile-actions">
-      <a href="{{ url('/studentform') }}" class="btn-edit">Edit Details</a>
-      <a href="{{ url('/change-password') }}" class="btn-edit">
+      <a href="{{ url('/studentform') }}" class="btn-primary">
+        Update Details
+      </a>
+      <a href="{{ url('/change-password') }}" class="btn-secondary">
         Change Password
       </a>
     </div>

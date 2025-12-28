@@ -9,14 +9,13 @@ class ProfileController extends Controller
 {
     public function show()
     {
-        // replaces: if (!isset($_SESSION['user_id']))
         if (!Auth::check()) {
             return redirect('/login');
         }
 
         $userId = Auth::id();
 
-        // 1-to-1 conversion of your SQL
+        // Fetch profile + education (same as your PHP version)
         $profile = DB::table('users as u')
             ->join('student_profile as sp', 'u.id', '=', 'sp.user_id')
             ->leftJoin('education_details as ed', 'sp.user_id', '=', 'ed.user_id')
@@ -42,11 +41,15 @@ class ProfileController extends Controller
             )
             ->first();
 
-        // If profile not created yet
-        if (!$profile) {
-            return view('profile', ['profile' => null]);
+        /**
+         * Decide update mode
+         * If DOB exists → form already submitted
+         */
+        $isUpdate = false;
+        if ($profile && $profile->dob) {
+            $isUpdate = true;
         }
 
-        return view('profile', compact('profile'));
+        return view('profile', compact('profile', 'isUpdate'));
     }
 }

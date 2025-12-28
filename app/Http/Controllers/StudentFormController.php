@@ -34,13 +34,32 @@ class StudentFormController extends Controller
             ->where('user_id', $userId)
             ->first();
 
-        return view('studentform', compact('profile', 'education'));
+        /**
+         * Decide mode
+         * If DOB exists → already submitted before
+         */
+        $isUpdate = false;
+        if ($profile && $profile->dob) {
+            $isUpdate = true;
+        }
+
+        return view('studentform', compact('profile', 'education', 'isUpdate'));
     }
 
-    /* ================= SUBMIT FORM ================= */
+    /* ================= SUBMIT / UPDATE FORM ================= */
     public function store(Request $request)
     {
         $userId = Auth::id();
+
+        // Check if this is first submission or update
+        $existingProfile = DB::table('student_profile')
+            ->where('user_id', $userId)
+            ->first();
+
+        $isUpdate = false;
+        if ($existingProfile && $existingProfile->dob) {
+            $isUpdate = true;
+        }
 
         /* ---------- OPTIONAL VALIDATION ---------- */
         $request->validate([
@@ -92,8 +111,13 @@ class StudentFormController extends Controller
                 ));
         }
 
-        /* ---------- REDIRECT ---------- */
+        /* ---------- REDIRECT WITH DIFFERENT MESSAGE ---------- */
+        if ($isUpdate) {
+            return redirect('/profile')
+                ->with('success', 'Details updated successfully.');
+        }
+
         return redirect('/profile')
-            ->with('success', 'Student details updated successfully.');
+            ->with('success', 'Student form submitted successfully.');
     }
 }

@@ -7,28 +7,44 @@
 }
 
 .profile-card {
-  width: 460px;
+  width: 480px;
   background: #ffffff;
-  padding: 20px 24px;
+  padding: 22px 26px;
   border-radius: 6px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
   font-family: Arial, Helvetica, sans-serif;
 }
 
 .profile-card h2 {
   text-align: center;
-  margin: 0 0 15px;
+  margin-bottom: 10px;
 }
 
+/* STATUS BADGE */
 .profile-status {
   text-align: center;
-  margin: 8px 0;
+  font-weight: bold;
+  padding: 6px;
+  border-radius: 4px;
+  margin-bottom: 12px;
 }
 
-.profile-status.error {
-  color: red;
+.profile-status.complete {
+  background: #d4edda;
+  color: #155724;
 }
 
+.profile-status.incomplete {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.profile-info {
+  text-align: center;
+  margin: 10px 0;
+}
+
+/* TABLE */
 .profile-table {
   width: 100%;
   border-collapse: collapse;
@@ -37,7 +53,7 @@
 
 .profile-table th,
 .profile-table td {
-  padding: 6px 8px;
+  padding: 7px 8px;
   border-bottom: 1px solid #ddd;
   text-align: left;
 }
@@ -47,61 +63,46 @@
   background: #f5f5f5;
 }
 
-.profile-actions {
-  text-align: center;
-  margin-top: 15px;
-}
-
-.profile-actions .btn-danger {
-  background: #d9534f;
-  color: #fff;
-  border: none;
-  padding: 7px 16px;
-  border-radius: 3px;
-  cursor: pointer;
-  font-weight: bold;
-  text-decoration: none;
-  display: inline-block;
-}
-
-.profile-actions .btn-danger:hover {
-  background: #c9302c;
-}
-
-.auth-links {
-  margin-top: 10px;
-  text-align: center;
-  font-size: 14px;
-}
-
-.auth-links a {
-  color: #007bff;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.auth-links a:hover {
-  text-decoration: underline;
-}
-
+/* EDUCATION */
 .education-section h3 {
   margin-top: 20px;
   margin-bottom: 10px;
   font-size: 18px;
 }
-.education-section .profile-table th[colspan="2"] {
-  text-align: left;
-  background: #f0f0f0;
+
+/* ACTION BUTTONS */
+.profile-actions {
+  text-align: center;
+  margin-top: 18px;
 }
 
-.btn-edit{
-  background-color: orange;
-  color: white;
+.btn-primary {
+  background: #0275d8;
+  color: #fff;
   border: none;
-  padding: 7px 16px;
-  border-radius: 3px;
-  cursor: pointer;
+  padding: 8px 18px;
+  border-radius: 4px;
   font-weight: bold;
   text-decoration: none;
   margin-right: 10px;
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  background: #025aa5;
+}
+
+.btn-secondary {
+  background: #f0ad4e;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-secondary:hover {
+  background: #ec971f;
 }

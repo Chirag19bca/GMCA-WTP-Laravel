@@ -6,6 +6,7 @@
 
 @php
   $profile = $profile ?? null;
+  $isCompleted = $profile && $profile->dob;
 @endphp
 
 <link rel="stylesheet" href="{{ url('css/profile.css') }}">
@@ -16,47 +17,33 @@
     <h2>User Profile</h2>
 
     {{-- PROFILE STATUS --}}
-    @if(!$profile || !$profile->dob)
-      <p class="profile-status incomplete">
-        Profile Status: Incomplete
-      </p>
-    @else
+    @if($isCompleted)
       <p class="profile-status complete">
         Profile Status: Completed
       </p>
+    @else
+      <p class="profile-status incomplete">
+        Profile Status: Incomplete
+      </p>
     @endif
 
-    {{-- IF PROFILE NOT FILLED --}}
-    @if(!$profile)
-      <p class="profile-info">
-        Your profile is not completed yet. Please fill your student details.
-      </p>
-
-      <div class="profile-actions">
-        <a href="{{ url('/studentform') }}" class="btn-primary">
-          Complete Profile
-        </a>
-      </div>
-
-    @else
-
-    {{-- BASIC DETAILS --}}
+    {{-- BASIC DETAILS (ALWAYS SHOWN) --}}
     <table class="profile-table">
       <tr>
         <th>Enrollment No</th>
-        <td>{{ $profile->enrollment_no }}</td>
+        <td>{{ $profile->enrollment_no ?? '—' }}</td>
       </tr>
       <tr>
         <th>First Name</th>
-        <td>{{ $profile->fname }}</td>
+        <td>{{ $profile->fname ?? '—' }}</td>
       </tr>
       <tr>
         <th>Last Name</th>
-        <td>{{ $profile->lname }}</td>
+        <td>{{ $profile->lname ?? '—' }}</td>
       </tr>
       <tr>
         <th>Email</th>
-        <td>{{ $profile->email }}</td>
+        <td>{{ $profile->email ?? '—' }}</td>
       </tr>
       <tr>
         <th>Date of Birth</th>
@@ -118,14 +105,13 @@
     {{-- ACTION BUTTONS --}}
     <div class="profile-actions">
       <a href="{{ url('/studentform') }}" class="btn-primary">
-        Update Details
+        {{ $isCompleted ? 'Update Details' : 'Complete Profile' }}
       </a>
+
       <a href="{{ url('/change-password') }}" class="btn-secondary">
         Change Password
       </a>
     </div>
-
-    @endif
 
   </div>
 </div>

@@ -54,9 +54,11 @@
 }
 
 .service-card h3 {
+    margin-top: 12px;
     margin-bottom: 10px;
     font-size: 18px;
 }
+
 
 .service-card p {
     font-size: 14px;

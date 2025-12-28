@@ -38,7 +38,7 @@
     <div class="contact-info">
         <p><strong>College:</strong> Government MCA College, Maninagar</p>
         <p><strong>Email:</strong> gmca@college.edu</p>
-        <p><strong>Phone:</strong> +91 98765 43210</p>
+        <p><strong>Phone:</strong> +91 95374 12455,+91 79904 95457</p>
     </div>
 </div>
 

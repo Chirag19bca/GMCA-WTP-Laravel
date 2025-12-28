@@ -220,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function () {
   step2.style.display = "none";
 
   document.getElementById("next-btn").onclick = function () {
-    if (!validateStep1()) return; // ❌ BLOCK NEXT
+    if (!validateStep1()) return; //  BLOCK NEXT
     step1.style.display = "none";
     step2.style.display = "block";
   };

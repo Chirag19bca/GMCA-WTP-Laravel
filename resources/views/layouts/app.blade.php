@@ -33,26 +33,6 @@ $fullName = trim($profile->fname . ' ' . $profile->lname);
     <link rel="stylesheet" href="{{ url('css/register.css') }}">
     <link rel="stylesheet" href="{{ url('css/studentform.css') }}">
 </head>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const messages = document.querySelectorAll(
-            ".success-msg, .error-msg, .profile-status"
-        );
-
-        if (messages.length) {
-            setTimeout(() => {
-                messages.forEach(msg => {
-                    msg.style.transition = "opacity 0.5s ease";
-                    msg.style.opacity = "0";
-
-                    setTimeout(() => {
-                        msg.style.display = "none";
-                    }, 500);
-                });
-            }, 2000);
-        }
-    });
-</script>
 
 <body>
     <table class="main-table">

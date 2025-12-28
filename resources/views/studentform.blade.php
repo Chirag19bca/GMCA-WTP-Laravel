@@ -31,7 +31,7 @@ $isUpdate = $isUpdate ?? false;
   </h1>
 
   <!-- ✅ ACTION + METHOD ADDED -->
-  <form id="student-form" method="POST" action="{{ url('/studentform') }}">
+  <form id="student-form" method="POST" action="{{ url('/studentform') }}" onsubmit="return validateStudentFormOnSubmit();">
     @csrf
 
     <!-- ================= FIELDSET 1 ================= -->
@@ -180,25 +180,5 @@ $isUpdate = $isUpdate ?? false;
 </main>
 
 <script src="{{ url('js/studentform.js') }}"></script>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const step1 = document.getElementById("step-1");
-    const step2 = document.getElementById("step-2");
-
-    step1.style.display = "block";
-    step2.style.display = "none";
-
-    document.getElementById("next-btn").onclick = () => {
-      step1.style.display = "none";
-      step2.style.display = "block";
-    };
-
-    document.getElementById("back-btn").onclick = () => {
-      step2.style.display = "none";
-      step1.style.display = "block";
-    };
-  });
-</script>
 
 @endsection

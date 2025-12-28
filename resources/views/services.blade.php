@@ -16,7 +16,9 @@
 
         <!-- Student Form -->
         <div class="service-card" onclick="goToStudentForm()">
-            <div class="service-icon">📄</div>
+<img src="{{ url('Asset/form.png') }}"
+                alt="Student Academic Form"
+                class="service-icon">
             <h3>Student Academic Form</h3>
             <p>
                 Fill and manage your academic details securely through

@@ -135,8 +135,8 @@
 /* Highlight invalid input */
 .form-control.error,
 .form-control:has(+ .error-msg:not(:empty)) {
-  border-color: #d9534f;
-  background: #fff5f5;
+  border-color: red;
+  background: red;
 }
 
 /* Highlight valid input (optional but clean) */

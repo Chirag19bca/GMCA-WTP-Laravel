@@ -27,41 +27,27 @@
       </p>
     @endif
 
-    {{-- IF PROFILE NOT COMPLETED --}}
-    @if(!$isCompleted)
-      <p class="profile-info">
-        Your profile is not completed yet. Please complete your student details.
-      </p>
-
-      <div class="profile-actions">
-        <a href="{{ url('/studentform') }}" class="btn-primary">
-          Complete Profile
-        </a>
-      </div>
-
-    @else
-
-    {{-- BASIC DETAILS --}}
+    {{-- BASIC DETAILS (ALWAYS SHOWN) --}}
     <table class="profile-table">
       <tr>
         <th>Enrollment No</th>
-        <td>{{ $profile->enrollment_no }}</td>
+        <td>{{ $profile->enrollment_no ?? '—' }}</td>
       </tr>
       <tr>
         <th>First Name</th>
-        <td>{{ $profile->fname }}</td>
+        <td>{{ $profile->fname ?? '—' }}</td>
       </tr>
       <tr>
         <th>Last Name</th>
-        <td>{{ $profile->lname }}</td>
+        <td>{{ $profile->lname ?? '—' }}</td>
       </tr>
       <tr>
         <th>Email</th>
-        <td>{{ $profile->email }}</td>
+        <td>{{ $profile->email ?? '—' }}</td>
       </tr>
       <tr>
         <th>Date of Birth</th>
-        <td>{{ $profile->dob }}</td>
+        <td>{{ $profile->dob ?? '—' }}</td>
       </tr>
       <tr>
         <th>Gender</th>
@@ -119,14 +105,13 @@
     {{-- ACTION BUTTONS --}}
     <div class="profile-actions">
       <a href="{{ url('/studentform') }}" class="btn-primary">
-        Update Details
+        {{ $isCompleted ? 'Update Details' : 'Complete Profile' }}
       </a>
+
       <a href="{{ url('/change-password') }}" class="btn-secondary">
         Change Password
       </a>
     </div>
-
-    @endif
 
   </div>
 </div>

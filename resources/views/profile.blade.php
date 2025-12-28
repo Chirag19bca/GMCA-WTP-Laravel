@@ -6,6 +6,7 @@
 
 @php
   $profile = $profile ?? null;
+  $isCompleted = $profile && $profile->dob;
 @endphp
 
 <link rel="stylesheet" href="{{ url('css/profile.css') }}">
@@ -16,20 +17,20 @@
     <h2>User Profile</h2>
 
     {{-- PROFILE STATUS --}}
-    @if(!$profile || !$profile->dob)
-      <p class="profile-status incomplete">
-        Profile Status: Incomplete
-      </p>
-    @else
+    @if($isCompleted)
       <p class="profile-status complete">
         Profile Status: Completed
       </p>
+    @else
+      <p class="profile-status incomplete">
+        Profile Status: Incomplete
+      </p>
     @endif
 
-    {{-- IF PROFILE NOT FILLED --}}
-    @if(!$profile)
+    {{-- IF PROFILE NOT COMPLETED --}}
+    @if(!$isCompleted)
       <p class="profile-info">
-        Your profile is not completed yet. Please fill your student details.
+        Your profile is not completed yet. Please complete your student details.
       </p>
 
       <div class="profile-actions">
@@ -60,7 +61,7 @@
       </tr>
       <tr>
         <th>Date of Birth</th>
-        <td>{{ $profile->dob ?? '—' }}</td>
+        <td>{{ $profile->dob }}</td>
       </tr>
       <tr>
         <th>Gender</th>

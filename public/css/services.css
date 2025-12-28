@@ -15,6 +15,12 @@
     margin-bottom: 35px;
 }
 
+.service-icon {
+    width: 80px;
+    max-height: 80px;
+    object-fit: contain;
+}
+
 .services-container {
     display: flex;
     justify-content: center;
@@ -23,19 +29,23 @@
 }
 
 .service-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     width: 280px;
     padding: 26px 22px;
     border-radius: 10px;
     cursor: pointer;
     background: #ffffff;
     border: 1px solid #ffd39b;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .service-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 10px 22px rgba(0,0,0,0.18);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
 }
 
 .service-icon {

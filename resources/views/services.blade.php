@@ -27,14 +27,18 @@
 
         <!-- Calculator -->
         <div class="service-card" onclick="goToCalculator()">
-            <div class="service-icon">🧮</div>
+            <img src="{{ url('Asset/calculator.png') }}"
+                alt="Calculator"
+                class="service-icon">
+
             <h3>Calculator</h3>
             <p>
-                Perform quick arithmetic calculations using our
+                Perform basic arithmetic calculations using our
                 built-in calculator tool.
             </p>
             <span class="service-link">Open Calculator →</span>
         </div>
+
 
     </div>
 </div>

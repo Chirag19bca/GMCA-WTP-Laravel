@@ -24,6 +24,21 @@
   border-radius: 5px;
 }
 
+
+legend {
+  width: 100%;
+  font-size: 1.2em;
+  font-weight: bold;
+  background-color: rgb(11, 109, 11);
+  /* footer color */
+  color: white;
+  padding: 12px 20px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  text-align: left;
+}
+
 /* --- Fieldset & Legend --- */
 fieldset {
   border: none;

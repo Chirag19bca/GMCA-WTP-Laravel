@@ -1,17 +1,17 @@
 @php
-    use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB;
 
-    $fullName = '';
+$fullName = '';
 
-    if (auth()->check()) {
-        $profile = DB::table('student_profile')
-            ->where('user_id', auth()->id())
-            ->first();
+if (auth()->check()) {
+$profile = DB::table('student_profile')
+->where('user_id', auth()->id())
+->first();
 
-        if ($profile) {
-            $fullName = trim($profile->fname . ' ' . $profile->lname);
-        }
-    }
+if ($profile) {
+$fullName = trim($profile->fname . ' ' . $profile->lname);
+}
+}
 @endphp
 
 <!DOCTYPE html>
@@ -33,6 +33,26 @@
     <link rel="stylesheet" href="{{ url('css/register.css') }}">
     <link rel="stylesheet" href="{{ url('css/studentform.css') }}">
 </head>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const messages = document.querySelectorAll(
+            ".success-msg, .error-msg, .profile-status"
+        );
+
+        if (messages.length) {
+            setTimeout(() => {
+                messages.forEach(msg => {
+                    msg.style.transition = "opacity 0.5s ease";
+                    msg.style.opacity = "0";
+
+                    setTimeout(() => {
+                        msg.style.display = "none";
+                    }, 500);
+                });
+            }, 2000);
+        }
+    });
+</script>
 
 <body>
     <table class="main-table">
@@ -44,16 +64,16 @@
 
                     <div class="header-left">
                         <img src="{{ url('Asset/Dhruvil.jpg') }}"
-                             class="student-img"
-                             onclick="autoLogin('Dhruvil')" />
+                            class="student-img"
+                            onclick="autoLogin('Dhruvil')" />
 
                         <img src="{{ url('Asset/Dhrumil.jpg') }}"
-                             class="student-img"
-                             onclick="autoLogin('Dhrumil')" />
+                            class="student-img"
+                            onclick="autoLogin('Dhrumil')" />
 
                         <img src="{{ url('Asset/Chirag.jpg') }}"
-                             class="student-img"
-                             onclick="autoLogin('Chirag')" />
+                            class="student-img"
+                            onclick="autoLogin('Chirag')" />
                     </div>
 
                     <div class="header-content">
@@ -61,14 +81,14 @@
                         <h3>Student ID: 25GMCA36, 25GMCA34, 25GMCA50</h3>
 
                         @auth
-                            <p class="header-status">
-                                Logged in as
-                                <span>{{ $fullName }}</span>
-                            </p>
+                        <p class="header-status">
+                            Logged in as
+                            <span>{{ $fullName }}</span>
+                        </p>
                         @endauth
 
                         @guest
-                            <p class="header-status">Not logged in</p>
+                        <p class="header-status">Not logged in</p>
                         @endguest
                     </div>
 
@@ -89,23 +109,23 @@
                 <a href="{{ url('/contact') }}">Contact</a> |
 
                 @guest
-                    <a href="{{ route('register') }}">Register</a> |
-                    <a href="{{ route('login') }}">Login</a>
+                <a href="{{ route('register') }}">Register</a> |
+                <a href="{{ route('login') }}">Login</a>
                 @endguest
 
                 @auth
-                    <a href="{{ url('/profile') }}">Profile</a> |
-                    <a href="{{ url('/calc') }}">Calculator</a> |
-                    <a href="{{ url('/studentform') }}">Student Form</a> |
-                    <a href="#"
-                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                        Logout
-                    </a>
+                <a href="{{ url('/profile') }}">Profile</a> |
+                <a href="{{ url('/calc') }}">Calculator</a> |
+                <a href="{{ url('/studentform') }}">Student Form</a> |
+                <a href="#"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    Logout
+                </a>
 
-                    <form id="logout-form" method="POST"
-                          action="{{ route('logout') }}" style="display:none;">
-                        @csrf
-                    </form>
+                <form id="logout-form" method="POST"
+                    action="{{ route('logout') }}" style="display:none;">
+                    @csrf
+                </form>
                 @endauth
             </td>
         </tr>
@@ -155,4 +175,5 @@
     </script>
 
 </body>
+
 </html>

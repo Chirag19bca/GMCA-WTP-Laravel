@@ -97,7 +97,7 @@
 <script>
   function submitRegisterForm() {
 
-    // 👇 THIS FUNCTION MUST ALREADY EXIST IN register.js
+    // THIS FUNCTION MUST ALREADY EXIST IN register.js
     // It should return true if all validations pass
     if (typeof validateRegisterFormOnSubmit === "function") {
 
@@ -108,7 +108,7 @@
       }
     }
 
-    // ✅ Validation passed → submit to Laravel
+    // Validation passed → submit to Laravel
     document.getElementById("register-form").submit();
   }
 </script>

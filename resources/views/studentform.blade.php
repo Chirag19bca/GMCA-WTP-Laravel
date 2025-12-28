@@ -30,7 +30,7 @@ $isUpdate = $isUpdate ?? false;
     {{ $isUpdate ? 'Update Student Details' : 'Student Application Form' }}
   </h1>
 
-  <!-- ✅ ACTION + METHOD ADDED -->
+  <!-- ACTION + METHOD ADDED -->
   <form id="student-form" method="POST" action="{{ url('/studentform') }}" onsubmit="return validateStudentFormOnSubmit();">
     @csrf
 

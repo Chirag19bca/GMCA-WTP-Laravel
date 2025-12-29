@@ -150,7 +150,7 @@ $fullName = trim($profile->fname . ' ' . $profile->lname);
                 return;
             }
 
-            window.location.href = "/auto-login/" + who;
+window.location.href = "{{ url('/auto-login') }}/" + who;
         }
     </script>
 

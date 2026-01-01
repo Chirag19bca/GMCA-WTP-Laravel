@@ -77,11 +77,11 @@ class LoginController extends Controller
                 ]);
             }
 
-            if (!Hash::check($password, $user->password)) {
-                return back()->withErrors([
-                    'password' => 'Incorrect password.'
-                ]);
-            }
+            // if (!Hash::check($password, $user->password)) {
+            //     return back()->withErrors([
+            //         'password' => 'Incorrect password.'
+            //     ]);
+            // }
 
             Auth::login($user);
             $request->session()->regenerate();

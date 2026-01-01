@@ -87,6 +87,8 @@ $fullName = trim($profile->fname . ' ' . $profile->lname);
                 <a href="{{ url('/about') }}">About Us</a> |
                 <a href="{{ url('/services') }}">Services</a> |
                 <a href="{{ url('/contact') }}">Contact</a> |
+                <a href="{{ url('/students') }}">students records</a> |
+
 
                 @guest
                 <a href="{{ route('register') }}">Register</a> |

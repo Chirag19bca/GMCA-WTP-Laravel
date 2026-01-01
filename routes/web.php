@@ -15,7 +15,12 @@ use App\Http\Controllers\StudentFormController;
 |--------------------------------------------------------------------------
 | Public Pages
 |--------------------------------------------------------------------------
-*/
+*/Route::get('/students', [StudentFormController::class, 'index'])
+    ->name('students.index');
+
+Route::get('/students/{id}', [StudentFormController::class, 'showStudent'])
+    ->name('students.show');
+
 
 Route::get('/', function () {
     return view('home');

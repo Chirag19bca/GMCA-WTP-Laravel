@@ -1,13 +1,86 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class StudentFormController extends Controller
 {
+public function index()
+{
+    $students = DB::table('users')
+        ->join('student_profile', 'users.id', '=', 'student_profile.user_id')
+        ->select(
+            'users.id',
+            'users.enrollment_no',
+            'users.email',
+            'student_profile.fname',
+            'student_profile.lname'
+        )
+        ->orderBy('users.id', 'desc')
+        ->paginate(10);
+
+    return view('students.index', compact('students'));
+}
+public function viewStudent($id)
+{
+    $student = DB::table('users')
+        ->join('student_profile', 'users.id', '=', 'student_profile.user_id')
+        ->leftJoin('education_details', 'users.id', '=', 'education_details.user_id')
+        ->where('users.id', $id)
+        ->select(
+            'users.enrollment_no',
+            'users.email',
+
+            'student_profile.fname',
+            'student_profile.lname',
+            'student_profile.dob',
+            'student_profile.gender',
+            'student_profile.contact',
+            'student_profile.address',
+
+            'education_details.ssc_school',
+            'education_details.ssc_board',
+            'education_details.ssc_percentage',
+            'education_details.hsc_school',
+            'education_details.hsc_board',
+            'education_details.hsc_percentage'
+        )
+        ->first();
+
+    return view('students.show', compact('student'));
+}
+
+public function showStudent($id)
+{
+    $student = DB::table('users')
+        ->join('student_profile', 'users.id', '=', 'student_profile.user_id')
+        ->leftJoin('education_details', 'users.id', '=', 'education_details.user_id')
+        ->where('users.id', $id)
+        ->select(
+            'users.enrollment_no',
+            'users.email',
+
+            'student_profile.fname',
+            'student_profile.lname',
+            'student_profile.dob',
+            'student_profile.gender',
+            'student_profile.contact',
+            'student_profile.address',
+
+            'education_details.ssc_school',
+            'education_details.ssc_board',
+            'education_details.ssc_percentage',
+            'education_details.hsc_school',
+            'education_details.hsc_board',
+            'education_details.hsc_percentage'
+        )
+        ->first();
+
+    return view('students.show', compact('student'));
+}
+
     /* ================= SHOW FORM ================= */
     public function show()
     {

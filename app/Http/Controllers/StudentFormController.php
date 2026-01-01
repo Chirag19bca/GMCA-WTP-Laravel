@@ -1,92 +1,95 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class StudentFormController extends Controller
 {
-public function index()
-{
-    $students = DB::table('users')
-        ->join('student_profile', 'users.id', '=', 'student_profile.user_id')
-        ->select(
-            'users.id',
-            'users.enrollment_no',
-            'users.email',
-            'student_profile.fname',
-            'student_profile.lname'
-        )
-        ->orderBy('users.id', 'desc')
-        ->paginate(10);
+    /* ================= STUDENT LIST ================= */
+    public function index()
+    {
+        $students = DB::table('users')
+            ->join('student_profile', 'users.id', '=', 'student_profile.user_id')
+            ->select(
+                'users.id',
+                'users.enrollment_no',
+                'users.email',
+                'student_profile.fname',
+                'student_profile.lname'
+            )
+            ->orderBy('users.enrollment_no', 'asc')
+            ->paginate(10);
 
-    return view('students.index', compact('students'));
-}
-public function viewStudent($id)
-{
-    $student = DB::table('users')
-        ->join('student_profile', 'users.id', '=', 'student_profile.user_id')
-        ->leftJoin('education_details', 'users.id', '=', 'education_details.user_id')
-        ->where('users.id', $id)
-        ->select(
-            'users.enrollment_no',
-            'users.email',
+        return view('students.index', compact('students'));
+    }
 
-            'student_profile.fname',
-            'student_profile.lname',
-            'student_profile.dob',
-            'student_profile.gender',
-            'student_profile.contact',
-            'student_profile.address',
+    /* ================= VIEW STUDENT ================= */
+    public function viewStudent($id)
+    {
+        $student = DB::table('users')
+            ->join('student_profile', 'users.id', '=', 'student_profile.user_id')
+            ->leftJoin('education_details', 'users.id', '=', 'education_details.user_id')
+            ->where('users.id', $id)
+            ->select(
+                'users.enrollment_no',
+                'users.email',
+                'student_profile.fname',
+                'student_profile.lname',
+                'student_profile.dob',
+                'student_profile.gender',
+                'student_profile.contact',
+                'student_profile.address',
+                'education_details.ssc_school',
+                'education_details.ssc_board',
+                'education_details.ssc_percentage',
+                'education_details.hsc_school',
+                'education_details.hsc_board',
+                'education_details.hsc_percentage'
+            )
+            ->first();
 
-            'education_details.ssc_school',
-            'education_details.ssc_board',
-            'education_details.ssc_percentage',
-            'education_details.hsc_school',
-            'education_details.hsc_board',
-            'education_details.hsc_percentage'
-        )
-        ->first();
+        return view('students.show', compact('student'));
+    }
 
-    return view('students.show', compact('student'));
-}
+    /* ================= EDIT STUDENT ================= */
+    public function edit($id)
+    {
+        $profile = DB::table('users')
+            ->join('student_profile', 'users.id', '=', 'student_profile.user_id')
+            ->where('users.id', $id)
+            ->select(
+                'users.id',
+                'users.enrollment_no',
+                'users.email',
+                'student_profile.fname',
+                'student_profile.lname',
+                'student_profile.dob',
+                'student_profile.gender',
+                'student_profile.contact',
+                'student_profile.address'
+            )
+            ->first();
 
-public function showStudent($id)
-{
-    $student = DB::table('users')
-        ->join('student_profile', 'users.id', '=', 'student_profile.user_id')
-        ->leftJoin('education_details', 'users.id', '=', 'education_details.user_id')
-        ->where('users.id', $id)
-        ->select(
-            'users.enrollment_no',
-            'users.email',
+        $education = DB::table('education_details')
+            ->where('user_id', $id)
+            ->first();
 
-            'student_profile.fname',
-            'student_profile.lname',
-            'student_profile.dob',
-            'student_profile.gender',
-            'student_profile.contact',
-            'student_profile.address',
+        return view('studentform', [
+            'profile'    => $profile,
+            'education'  => $education,
+            'editUserId' => $id,
+            'isEdit'     => true
+        ]);
+    }
 
-            'education_details.ssc_school',
-            'education_details.ssc_board',
-            'education_details.ssc_percentage',
-            'education_details.hsc_school',
-            'education_details.hsc_board',
-            'education_details.hsc_percentage'
-        )
-        ->first();
-
-    return view('students.show', compact('student'));
-}
-
-    /* ================= SHOW FORM ================= */
+    /* ================= LOGGED USER FORM ================= */
     public function show()
     {
         $userId = Auth::id();
 
-        // Fetch user + profile
         $profile = DB::table('users')
             ->join('student_profile', 'users.id', '=', 'student_profile.user_id')
             ->where('users.id', $userId)
@@ -102,39 +105,22 @@ public function showStudent($id)
             )
             ->first();
 
-        // Fetch education details
         $education = DB::table('education_details')
             ->where('user_id', $userId)
             ->first();
 
-        /**
-         * Decide mode
-         * If DOB exists → already submitted before
-         */
-        $isUpdate = false;
-        if ($profile && $profile->dob) {
-            $isUpdate = true;
-        }
+        $isUpdate = ($profile && $profile->dob);
 
         return view('studentform', compact('profile', 'education', 'isUpdate'));
     }
 
-    /* ================= SUBMIT / UPDATE FORM ================= */
+    /* ================= SUBMIT / UPDATE ================= */
     public function store(Request $request)
     {
-        $userId = Auth::id();
+        // Decide which user to update
+        $userId = $request->edit_user_id ?? Auth::id();
 
-        // Check if this is first submission or update
-        $existingProfile = DB::table('student_profile')
-            ->where('user_id', $userId)
-            ->first();
-
-        $isUpdate = false;
-        if ($existingProfile && $existingProfile->dob) {
-            $isUpdate = true;
-        }
-
-        /* ---------- OPTIONAL VALIDATION ---------- */
+        /* ---------- VALIDATION ---------- */
         $request->validate([
             'dob'            => 'nullable|date',
             'gender'         => 'nullable|in:male,female',
@@ -148,7 +134,7 @@ public function showStudent($id)
             'hsc_percentage' => 'nullable|numeric',
         ]);
 
-        /* ---------- UPDATE student_profile ---------- */
+        /* ---------- UPDATE PROFILE ---------- */
         DB::table('student_profile')
             ->where('user_id', $userId)
             ->update([
@@ -158,39 +144,29 @@ public function showStudent($id)
                 'address' => $request->address,
             ]);
 
-        /* ---------- INSERT or UPDATE education_details ---------- */
-        $educationData = [
-            'ssc_school'     => $request->ssc_school,
-            'ssc_board'      => $request->ssc_board,
-            'ssc_percentage' => $request->ssc_percentage,
-            'hsc_school'     => $request->hsc_school,
-            'hsc_board'      => $request->hsc_board,
-            'hsc_percentage' => $request->hsc_percentage,
-        ];
+        /* ---------- UPDATE / INSERT EDUCATION ---------- */
+        DB::table('education_details')
+            ->updateOrInsert(
+                ['user_id' => $userId],
+                [
+                    'ssc_school'     => $request->ssc_school,
+                    'ssc_board'      => $request->ssc_board,
+                    'ssc_percentage' => $request->ssc_percentage,
+                    'hsc_school'     => $request->hsc_school,
+                    'hsc_board'      => $request->hsc_board,
+                    'hsc_percentage' => $request->hsc_percentage,
+                ]
+            );
 
-        $exists = DB::table('education_details')
-            ->where('user_id', $userId)
-            ->exists();
-
-        if ($exists) {
-            DB::table('education_details')
-                ->where('user_id', $userId)
-                ->update($educationData);
-        } else {
-            DB::table('education_details')
-                ->insert(array_merge(
-                    ['user_id' => $userId],
-                    $educationData
-                ));
-        }
-
-        /* ---------- REDIRECT WITH DIFFERENT MESSAGE ---------- */
-        if ($isUpdate) {
-            return redirect('/profile')
+        /* ---------- REDIRECT ---------- */
+        if ($request->has('edit_user_id')) {
+            return redirect()
+                ->route('students.show', $userId)
                 ->with('success', 'Details updated successfully.');
         }
 
-        return redirect('/profile')
-            ->with('success', 'Student form submitted successfully.');
+        return redirect()
+            ->back()
+            ->with('success', 'Details updated successfully.');
     }
 }

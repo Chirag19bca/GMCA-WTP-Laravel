@@ -15,13 +15,9 @@ use App\Http\Controllers\StudentFormController;
 |--------------------------------------------------------------------------
 | Public Pages
 |--------------------------------------------------------------------------
-*/Route::get('/students', [StudentFormController::class, 'index'])
-    ->name('students.index');
+*/
 
-Route::get('/students/{id}', [StudentFormController::class, 'showStudent'])
-    ->name('students.show');
-
-
+// Static pages (public)
 Route::get('/', function () {
     return view('home');
 });
@@ -62,7 +58,7 @@ Route::post('/register', [RegisterController::class, 'register'])
 Route::get('/auto-login/{user}', [AutoLoginController::class, 'login'])
     ->name('auto.login');
 
-// Logout (POST – correct & secure)
+// Logout
 Route::post('/logout', [LoginController::class, 'logout'])
     ->name('logout');
 
@@ -81,19 +77,41 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'handle']);
 
 Route::middleware('auth')->group(function () {
 
+    // Normal user pages
     Route::get('/profile', [ProfileController::class, 'show']);
 
     Route::get('/calc', function () {
         return view('calc');
     });
 
-    // Student Form
+    // Student Form (normal user)
     Route::get('/studentform', [StudentFormController::class, 'show']);
     Route::post('/studentform', [StudentFormController::class, 'store']);
 
     // Change Password
     Route::get('/change-password', [ChangePasswordController::class, 'show']);
     Route::post('/change-password', [ChangePasswordController::class, 'update']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Admin Only Pages
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'admin'])->group(function () {
+
+    // Student records list
+    Route::get('/students', [StudentFormController::class, 'index'])
+        ->name('students.index');
+
+    // IMPORTANT: edit before {id}
+    Route::get('/students/{id}/edit', [StudentFormController::class, 'edit'])
+        ->name('students.edit');
+
+    // View student details
+    Route::get('/students/{id}', [StudentFormController::class, 'viewStudent'])
+        ->name('students.show');
 });
 
 /*

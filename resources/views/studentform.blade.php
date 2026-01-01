@@ -1,71 +1,63 @@
-@php
-use Illuminate\Support\Facades\DB;
-
-$user = null;
-$profile = null;
-$education = null;
-
-if (auth()->check()) {
-$user = DB::table('users')->where('id', auth()->id())->first();
-$profile = DB::table('student_profile')->where('user_id', auth()->id())->first();
-$education = DB::table('education_details')->where('user_id', auth()->id())->first();
-}
-@endphp
-
 @extends('layouts.app')
 
 @section('title', 'Student Form')
 
 @section('content')
-@php
-$isUpdate = $isUpdate ?? false;
-@endphp
-
 
 <link rel="stylesheet" href="{{ url('css/studentform.css') }}">
 
 <main class="form-container">
+
   <img src="{{ url('Asset/GMCAwithName.png') }}" width="650pt" />
+
   <h1 id="form-title">
-    {{ $isUpdate ? 'Update Student Details' : 'Student Application Form' }}
+    {{ ($isEdit ?? false) || ($isUpdate ?? false) ? 'Update Student Details' : 'Student Application Form' }}
   </h1>
 
-  <!-- ACTION + METHOD ADDED -->
-  <form id="student-form" method="POST" action="{{ url('/studentform') }}" onsubmit="return validateStudentFormOnSubmit();">
+  <!-- FORM -->
+  <form id="student-form"
+        method="POST"
+        action="{{ url('/studentform') }}"
+        onsubmit="return validateStudentFormOnSubmit();">
     @csrf
 
-    <!-- ================= FIELDSET 1 ================= -->
+    {{-- IMPORTANT: hidden user id for edit --}}
+    @if(isset($isEdit) && $isEdit)
+        <input type="hidden" name="edit_user_id" value="{{ $editUserId }}">
+    @endif
+
+    <!-- ================= STEP 1 ================= -->
     <fieldset id="step-1">
       <legend>Personal Information</legend>
 
       <div class="form-row">
         <label>Enrollment No</label>
         <input type="text" class="form-control" readonly
-          value="{{ $user->enrollment_no ?? '' }}">
+               value="{{ $profile->enrollment_no ?? '' }}">
       </div>
 
       <div class="form-row">
         <label>First Name</label>
         <input type="text" class="form-control" readonly
-          value="{{ $profile->fname ?? '' }}">
+               value="{{ $profile->fname ?? '' }}">
       </div>
 
       <div class="form-row">
         <label>Last Name</label>
         <input type="text" class="form-control" readonly
-          value="{{ $profile->lname ?? '' }}">
+               value="{{ $profile->lname ?? '' }}">
       </div>
 
       <div class="form-row">
         <label>Email</label>
         <input type="text" class="form-control" readonly
-          value="{{ $profile->email ?? '' }}">
+               value="{{ $profile->email ?? '' }}">
       </div>
 
       <div class="form-row">
         <label>Date of Birth</label>
         <input type="date" name="dob" id="dob" class="form-control"
-          value="{{ $profile->dob ?? '' }}">
+               value="{{ $profile->dob ?? '' }}">
         <span id="dob_error" class="error-msg"></span>
       </div>
 
@@ -89,7 +81,7 @@ $isUpdate = $isUpdate ?? false;
       <div class="form-row">
         <label>Contact No</label>
         <input type="text" name="contact_no" id="contact_no" class="form-control"
-          value="{{ $profile->contact ?? '' }}">
+               value="{{ $profile->contact ?? '' }}">
         <span id="contact_no_error" class="error-msg"></span>
       </div>
 
@@ -106,7 +98,7 @@ $isUpdate = $isUpdate ?? false;
       </div>
     </fieldset>
 
-    <!-- ================= FIELDSET 2 ================= -->
+    <!-- ================= STEP 2 ================= -->
     <fieldset id="step-2">
       <legend>Education Details</legend>
 
@@ -115,8 +107,7 @@ $isUpdate = $isUpdate ?? false;
       <div class="form-row">
         <label>School Name</label>
         <input type="text" name="ssc_school" id="ssc_school" class="form-control"
-          value="{{ $education->ssc_school ?? '' }}">
-        <span id="ssc_school_error" class="error-msg"></span>
+               value="{{ $education->ssc_school ?? '' }}">
       </div>
 
       <div class="form-row">
@@ -127,14 +118,12 @@ $isUpdate = $isUpdate ?? false;
           <option value="CBSE" {{ ($education->ssc_board ?? '')=='CBSE'?'selected':'' }}>CBSE</option>
           <option value="ICSE" {{ ($education->ssc_board ?? '')=='ICSE'?'selected':'' }}>ICSE</option>
         </select>
-        <span id="ssc_board_error" class="error-msg"></span>
       </div>
 
       <div class="form-row">
         <label>Percentage</label>
         <input type="number" name="ssc_percentage" id="ssc_percentage" class="form-control"
-          value="{{ $education->ssc_percentage ?? '' }}">
-        <span id="ssc_percentage_error" class="error-msg"></span>
+               value="{{ $education->ssc_percentage ?? '' }}">
       </div>
 
       <h3>12th Standard</h3>
@@ -142,8 +131,7 @@ $isUpdate = $isUpdate ?? false;
       <div class="form-row">
         <label>School Name</label>
         <input type="text" name="hsc_school" id="hsc_school" class="form-control"
-          value="{{ $education->hsc_school ?? '' }}">
-        <span id="hsc_school_error" class="error-msg"></span>
+               value="{{ $education->hsc_school ?? '' }}">
       </div>
 
       <div class="form-row">
@@ -154,14 +142,12 @@ $isUpdate = $isUpdate ?? false;
           <option value="CBSE" {{ ($education->hsc_board ?? '')=='CBSE'?'selected':'' }}>CBSE</option>
           <option value="ICSE" {{ ($education->hsc_board ?? '')=='ICSE'?'selected':'' }}>ICSE</option>
         </select>
-        <span id="hsc_board_error" class="error-msg"></span>
       </div>
 
       <div class="form-row">
         <label>Percentage</label>
         <input type="number" name="hsc_percentage" id="hsc_percentage" class="form-control"
-          value="{{ $education->hsc_percentage ?? '' }}">
-        <span id="hsc_percentage_error" class="error-msg"></span>
+               value="{{ $education->hsc_percentage ?? '' }}">
       </div>
 
       <div class="submit-container">
@@ -170,9 +156,8 @@ $isUpdate = $isUpdate ?? false;
         </button>
 
         <button type="submit" id="submit-btn">
-          {{ $isUpdate ? 'Update Details' : 'Submit Application' }}
+          {{ ($isEdit ?? false) || ($isUpdate ?? false) ? 'Update Details' : 'Submit Application' }}
         </button>
-
       </div>
     </fieldset>
 

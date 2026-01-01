@@ -1,10 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h3>Student Details</h3>
+<link rel="stylesheet" href="{{ asset('css/students.css') }}">
 
-    <table class="table table-bordered">
+<div class="students-container">
+    <h3 class="students-title">Student Details</h3>
+
+    <table class="students-table details-table">
         <tr><th>Name</th><td>{{ $student->fname }} {{ $student->lname }}</td></tr>
         <tr><th>Enrollment No</th><td>{{ $student->enrollment_no }}</td></tr>
         <tr><th>Email</th><td>{{ $student->email }}</td></tr>
@@ -22,6 +24,6 @@
         <tr><th>HSC %</th><td>{{ $student->hsc_percentage }}</td></tr>
     </table>
 
-    <a href="{{ route('students.index') }}" class="btn btn-secondary">Back</a>
+    <a href="{{ route('students.index') }}" class="back-btn">⬅ Back</a>
 </div>
 @endsection

@@ -1,0 +1,133 @@
+/* ===== COMMON ===== */
+.students-container {
+    max-width: 1150px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.students-title {
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: 600;
+    font-size: 22px;
+    color: #333;
+}
+
+/* ===== TABLE ===== */
+.students-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+}
+
+.students-table th {
+    background-color: #0d6efd;
+    color: #ffffff;
+    padding: 12px;
+    text-align: left;
+    font-weight: 500;
+}
+
+.students-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e0e0e0;
+    color: #333;
+}
+
+/* Zebra striping for better readability */
+.students-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.students-table tr:hover {
+    background-color: #eef4ff;
+}
+
+/* ===== BUTTON ===== */
+.btn-view {
+    background-color: #198754;
+    color: #ffffff;
+    padding: 7px 14px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-view:hover {
+    background-color: #157347;
+    color: #ffffff;
+}
+
+/* ===== DETAILS TABLE ===== */
+.details-table th {
+    width: 30%;
+    background: #f1f1f1;
+    color: #333;
+    font-weight: 500;
+}
+
+.details-table td {
+    background: #ffffff;
+}
+
+/* ===== BACK BUTTON ===== */
+.back-btn {
+    margin-top: 20px;
+    display: inline-block;
+    background: #212529;
+    color: #ffffff;
+    padding: 9px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.back-btn:hover {
+    background: #000000;
+    color: #ffffff;
+}
+/* ===== SIMPLE PAGINATION ===== */
+.simple-pagination {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.page-btn {
+    background-color: #0d6efd;
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.page-btn:hover {
+    background-color: #0b5ed7;
+    color: #fff;
+}
+
+.btn-edit {
+    background-color: #ffc107;
+    color: #000;
+    padding: 7px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 6px;
+}
+
+.btn-edit:hover {
+    background-color: #e0a800;
+    color: #000;
+}
+

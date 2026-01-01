@@ -117,10 +117,8 @@ class StudentFormController extends Controller
     /* ================= SUBMIT / UPDATE ================= */
     public function store(Request $request)
     {
-        // Decide which user to update
         $userId = $request->edit_user_id ?? Auth::id();
 
-        /* ---------- VALIDATION ---------- */
         $request->validate([
             'dob'            => 'nullable|date',
             'gender'         => 'nullable|in:male,female',
@@ -134,7 +132,6 @@ class StudentFormController extends Controller
             'hsc_percentage' => 'nullable|numeric',
         ]);
 
-        /* ---------- UPDATE PROFILE ---------- */
         DB::table('student_profile')
             ->where('user_id', $userId)
             ->update([
@@ -144,7 +141,6 @@ class StudentFormController extends Controller
                 'address' => $request->address,
             ]);
 
-        /* ---------- UPDATE / INSERT EDUCATION ---------- */
         DB::table('education_details')
             ->updateOrInsert(
                 ['user_id' => $userId],
@@ -158,7 +154,7 @@ class StudentFormController extends Controller
                 ]
             );
 
-        /* ---------- REDIRECT ---------- */
+        // Redirect logic
         if ($request->has('edit_user_id')) {
             return redirect()
                 ->route('students.show', $userId)
@@ -166,7 +162,7 @@ class StudentFormController extends Controller
         }
 
         return redirect()
-            ->back()
+            ->route('profile')
             ->with('success', 'Details updated successfully.');
     }
 }

@@ -78,8 +78,8 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'handle']);
 Route::middleware('auth')->group(function () {
 
     // Normal user pages
-    Route::get('/profile', [ProfileController::class, 'show']);
-
+    Route::get('/profile', [ProfileController::class, 'show'])
+        ->name('profile');
     Route::get('/calc', function () {
         return view('calc');
     });
